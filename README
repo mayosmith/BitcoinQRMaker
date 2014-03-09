@@ -1,0 +1,5 @@
+Client-side QR Code and thermal printer file maker. This application makes the thermal printer QR files that are stored on the OpenBitcoinATM SD card.
+
+Open BTCQRMaker.html in a Chrome browser and follow the directions here:
+
+http://openbitcoinatm.org/step-6/
