@@ -43,12 +43,11 @@
   }
 </style>
 
-
-<script type="text/javascript" src="js/biginteger.js"></script>
+<script type="text/javascript" src="js/qrcode-filemaker.js"></script>
 <script type="text/javascript" src="js/jquery.min.js"></script>
-<script type="text/javascript" src="js/qrcode.js"></script>
-<script type="text/javascript" src="js/cryptojs.js"></script>
-<script type="text/javascript" src="js/sha256.js"></script>
+<script type="text/javascript" src="js/filesaver.js"></script>
+
+<script type="text/javascript" src="js/baseconverter.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 
 
@@ -69,10 +68,10 @@
 		<br>
 
 <div id="qrcode"></div>
+
 <br>
 <br>
 <div>176 x 176 pixel png for Open Bitcoin ATM Thermal Printer</div>
-<br>
 <br>
 
 
@@ -81,10 +80,11 @@
          
 		  <input type="text" id="privKey" style="width:500px; name="input1" class="span3" placeholder="Copy and paste wallet import format private key here..."> 
 			      <br>
+				  <input type="text" id="btcFileName" style="width:200px; name="input2" class="span3" placeholder="File Name: BTC_#.btc"> 
 			      <br>
 
 		 <div>	
-		<button type="button" class="btn btn-large btn-success" onclick="makeCode()">Make QR Code</button>
+		<button type="button" class="btn btn-large btn-success" onclick="makeCode()">Make QR Code and Thermal Printer File</button>
 		</div>
 
 
@@ -98,14 +98,46 @@ var qrcode = new QRCode(document.getElementById("qrcode"), {
 	correcLevel : QRCode.CorrectLevel.H
 });
 
-function makeCode () {		
-	var eText = document.getElementById("privKey");
+/* 
+----------------------------------------
+http://jsfiddle.net/UselessCode/qm5AG/
+----------------------------------------
+*/
+function createFile(){
 	
-	if (!eText.value) {
-		eText.focus();
+	var textFile = null,
+	  makeTextFile = function (text) {
+	    var data = new Blob([text], {type: 'text/plain'});
+
+	    // If we are replacing a previously generated file we need to
+	    // manually revoke the object URL to avoid memory leaks.
+	    if (textFile !== null) {
+	      window.URL.revokeObjectURL(textFile);
+	    }
+
+	    textFile = window.URL.createObjectURL(data);
+
+	    // returns a URL you can use as an href
+	    return textFile;
+	  };
+	
+}
+
+
+
+function makeCode () {		
+	var pKey = document.getElementById("privKey");
+	
+	
+	if (!pKey.value) {
+		pKey.focus();
 		return;
 	}
-		qrcode.makeCode(eText.value);
+
+		qrcode.makeCode(pKey.value);
+
+		
+	
 
 }	
 </script>
